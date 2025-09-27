@@ -1,0 +1,19 @@
+Я створив трохи спрощений запит щоб бло простіше пояснити.
+Отже мій перший запит був таким:
+
+SELECT COUNT(*) FROM order_details
+INNER JOIN orders ON orders.id = order_details.order_id
+INNER JOIN customers ON customers.id = orders.customer_id
+
+Це дало мені результат в 518 строк що являє з собою всі оредери які в нас є. 
+В данному випадку в нас відношення orders та order_details один до одного але вже відношення orders до customers - один до багатьох.
+Маючі такі відношення і якщо ми змінимо останній JOIN з INNER на LEFT то нічого не зміниться.
+Але цікаве відбувається тоді, коли ми змінимо на RIGHT тобто:
+
+SELECT COUNT(*) FROM order_details
+INNER JOIN orders ON orders.id = order_details.order_id
+RIGHT JOIN customers ON customers.id = orders.customer_id
+
+В такому випадку ми отримаємо вже більше результатів - 535
+Це пояснюється тим, що ми в нашу результуючу таблицю додаємо всіх кастомерів що є в таблиці кастомерів. 
+Але на всі кастомери брали участь у замовленнях. Тож ми будемо мати NULL по всіх стовпчиках що повязані з замовленнями навпроти деталей про кастомера
